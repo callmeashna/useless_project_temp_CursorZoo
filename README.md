@@ -1,7 +1,7 @@
 <img width="3188" height="1202" alt="frame (3)" src="https://github.com/user-attachments/assets/517ad8e9-ad22-457d-9538-a9e62d137cd7" />
 
 
-# [Project Name] 🎯
+# [Project Name] 🎯CURSOR-ZOO
 
 
 ## Basic Details
@@ -9,53 +9,92 @@
 
 
 ### Team Members
-- Team Lead: [Name] - [College]
+- Team Lead: Ashna Mariyam Shaji - LBSITW
 - Member 2: [Name] - [College]
 - Member 3: [Name] - [College]
 
 ### Project Description
-[2-3 lines about what your project does]
-
+Cursor Zoo is a fun, animated website where your cursor transforms into a hyperactive creature. It leaves glitter, flashes random thoughts, and acts like it has a mind of its own. It's a chaotic celebration of nonsense.
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+Cursors are way too well-behaved. Nobody asked for it, but we thought it was about time someone gave cursors the freedom to go wild. After all, how can you focus when your pointer isn’t sparkling or roaring?
 
 ### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
-
+We turned your plain, responsible pointer into a zoo exhibit. It glows, jumps, spins, throws emojis, and occasionally predicts your future (badly). It doesn’t solve anything—except the crushing seriousness of everyday life.
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
+- HTML,CSS,JAVASCRIPT
+- [Frameworks used]-NONE
+- [Libraries used]-NONE
+- [Tools used]-NONE
 
 For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
+- [List main components]-NONE
+- [List specifications]-NONE
+- [List tools required]-NONE
 
 ### Implementation
 For Software:
 # Installation
-[commands]
+[commands]#### # Installation
+
+Clone this cursor-zoo to your local machine:
+
+bash
+git clone https://github.com/yourusername/cursor-zoo
 
 # Run
-[commands]
+
+Open main.html in your browser and let the cursor circus begin.
 
 ### Project Documentation
 For Software:
 
 # Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot1]main.png
+It is the main page which has many option-calculator,mood analyser,fortune teller,game,just trails...
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot2]fortune.png
+It gives sarcastic fortune based on animal the person selects.
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot3]
+game2.png
+game3.png
+Rules- 
+1. Pick an Animal 🐾
+Choose your spirit animal. Each animal has a favorite food and a lifespan (number of correct foods to survive).
 
+
+2. Become the Cursor Animal 🖱️
+Your cursor turns into your chosen animal. You are now the animal. Yes, you.
+
+
+3. Catch Your Favorite Food 🍉
+Food will fall from the sky. Move your animal (cursor) to eat only the correct food it loves.
+
+
+4. Avoid the Wrong Food 🚫
+Eat something wrong? Instant doom. Your animal dies a dramatic death. ☠️
+
+
+5. Don’t Miss Too Many Good Foods 😱
+Miss 5 of your favorite food? Your animal starves. Life is cruel.
+
+
+6. Goal: Stay Alive Till Your Lifespan ⏳
+Catch the right food n times (lifespan number) to let your animal live a full, glorious life.
+
+
+7. Bonus: Sparkle Like a Star ✨
+Your cursor leaves trails because why not? You're fabulous.
+
+![Screenshot4]
+calc.png
+Animals are used instead of numbers and birds instead of operation symbols.(be ready to get eye strain)
+
+![Screenshot5]
+trail.png
+just cursor trails (y boring normal cursors???)
 # Diagrams
 ![Workflow](Add your workflow/architecture diagram here)
 *Add caption explaining your workflow*
@@ -81,7 +120,7 @@ For Hardware:
 
 ### Project Demo
 # Video
-[Add your demo video link here]
+2cursorzoo.mp4
 *Explain what the video demonstrates*
 
 # Additional Demos

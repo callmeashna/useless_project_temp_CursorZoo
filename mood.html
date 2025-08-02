@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Animal Mood Selector</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: #fffbe7;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2em;
+      color: #ff69b4;
+    }
+
+    .animal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .animal {
+      font-size: 2rem;
+      cursor: pointer;
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+      padding: 10px;
+      transition: all 0.3s;
+    }
+
+    .animal:hover {
+      background-color: #fff0f5;
+      transform: scale(1.1);
+    }
+
+    .result {
+      margin-top: 30px;
+      font-size: 1.3rem;
+      background-color: #ffe;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      padding: 15px;
+      display: none;
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      background-color: #ffb6c1;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #ff69b4;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐾 Select an Animal Based on Your Mood 🧠</h1>
+
+  <div class="animal-grid">
+    <div class="animal" onclick="showMood('flamingo')">🦩</div>
+    <div class="animal" onclick="showMood('parrot')">🦜</div>
+    <div class="animal" onclick="showMood('peacock')">🦚</div>
+    <div class="animal" onclick="showMood('dodo')">🦤</div>
+    <div class="animal" onclick="showMood('swan')">🦢</div>
+    <div class="animal" onclick="showMood('chicken')">🐔</div>
+    <div class="animal" onclick="showMood('bird')">🐦</div>
+    <div class="animal" onclick="showMood('eagle')">🦅</div>
+    <div class="animal" onclick="showMood('duck')">🦆</div>
+    <div class="animal" onclick="showMood('owl')">🦉</div>
+    <div class="animal" onclick="showMood('elephant')">🐘</div>
+    <div class="animal" onclick="showMood('sloth')">🦥</div>
+    <div class="animal" onclick="showMood('seal')">🦭</div>
+    <div class="animal" onclick="showMood('panda')">🐼</div>
+    <div class="animal" onclick="showMood('racoon')">🦝</div>
+    <div class="animal" onclick="showMood('snake')">🐍</div>
+    <div class="animal" onclick="showMood('liama')">🦙</div>
+    <div class="animal" onclick="showMood('giraffe')">🦒</div>
+    <div class="animal" onclick="showMood('chipmunk')">🐿️</div>
+    <div class="animal" onclick="showMood('fox')">🦊</div>
+    <div class="animal" onclick="showMood('bat')">🦇</div>
+    <div class="animal" onclick="showMood('octopus')">🐙</div>
+    <div class="animal" onclick="showMood('dog')">🐶</div>
+    <div class="animal" onclick="showMood('cat')">🐱</div>
+    <div class="animal" onclick="showMood('monkey')">🐵</div>
+    <div class="animal" onclick="showMood('penguin')">🐧</div>
+    <div class="animal" onclick="showMood('unicorn')">🦄</div>
+    <div class="animal" onclick="showMood('lion')">🦁</div>
+  </div>
+
+  <div class="result" id="result"></div>
+
+  <button onclick="window.location.href='index.html'">🔙 Back </button>
+
+  <script>
+    const moods = {
+      flamingo: ["Feeling fabulous 💃", "You strut like a diva, but run from responsibilities."],
+      parrot: ["Talkative and colorful 🎨", "You're basically a gossip radio with wings."],
+      peacock: ["Vibing high 🦚", "You look stunning... till you speak."],
+      dodo: ["Extinct mood ☠️", "You're dead inside, just like me."],
+      swan: ["Graceful... or trying to be 🦢", "Elegant outside, chaos inside."],
+      chicken: ["Scared of life 🐓", "You'd run from your own shadow."],
+      bird: ["Light and lost 🐦", "You flap a lot but get nowhere."],
+      eagle: ["Focused & fierce 🦅", "Too intense, chill bird."],
+      duck: ["Cool but clumsy 🦆", "Calm outside, paddling like crazy inside."],
+      owl: ["Wise and tired 🦉", "Knows everything, does nothing."],
+      elephant: ["Gentle but overwhelmed 🐘", "Memory long, patience short."],
+      sloth: ["Lazy legend 🦥", "You move once a week. Maybe."],
+      seal: ["Chill & wiggly 🦭", "You clap for food. That's it."],
+      panda: ["Cute depression 🐼", "Overeating to avoid responsibilities."],
+      racoon: ["Gremlin energy 🦝", "You thrive in garbage and drama."],
+      snake: ["Sneaky vibes 🐍", "You smile... but hiss inside."],
+      liama: ["Sassy & spitty 🦙", "You spit on problems and walk off."],
+      giraffe: ["Above all nonsense 🦒", "You see everything... do nothing."],
+      chipmunk: ["Hyper & hungry 🐿️", "Too much coffee, zero focus."],
+      fox: ["Cunning & stylish 🦊", "You're up to something... always."],
+      bat: ["Nocturnal introvert 🦇", "You avoid light and people. Respect."],
+      octopus: ["Multitasking mess 🐙", "Eight arms, zero productivity."],
+      dog: ["Loyal & loud 🐶", "Happy outside, chaotic soul."],
+      cat: ["Silent judgment 🐱", "You stare like you own everyone."],
+      monkey: ["Playful troublemaker 🐵", "You're one banana away from disaster."],
+      penguin: ["Awkwardly cute 🐧", "You waddle through life unbothered."],
+      unicorn: ["Delusional magic 🦄", "You live in a fantasy. Stay there."],
+      lion: ["Bold & tired 🦁", "You roar at your alarm and sleep again."]
+    };
+
+    function showMood(animal) {
+      const result = document.getElementById('result');
+      const [mood, roast] = moods[animal];
+      result.innerHTML = `<strong>Mood:</strong> ${mood}<br/><strong>Roast:</strong> ${roast}`;
+      result.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

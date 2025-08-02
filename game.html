@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feed Me Right</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(to right, #1e1e2f, #2e2e4f);
+      color: white;
+      overflow: hidden;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      cursor: none;
+    }
+
+    #menu {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .animal-button {
+      font-size: 30px;
+      margin: 10px;
+      padding: 10px;
+      cursor: pointer;
+      background: #444;
+      border: none;
+      border-radius: 10px;
+      transition: transform 0.2s;
+      color: white;
+    }
+
+    .animal-button:hover {
+      transform: scale(1.2);
+    }
+
+    #back-main {
+      font-size: 18px;
+      background: #888;
+      margin-top: 20px;
+      display: inline-block;
+    }
+
+    #game-screen {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #cursor-animal {
+      position: absolute;
+      pointer-events: none;
+      z-index: 1000;
+      transition: transform 0.1s;
+      font-size: 60px;
+    }
+
+    .falling-food {
+      position: absolute;
+      top: 0;
+      font-size: 40px;
+      user-select: none;
+    }
+
+    #scoreboard {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 24px;
+      z-index: 10;
+    }
+
+    .game-over {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      text-align: center;
+      max-width: 80%;
+      background: rgba(0,0,0,0.6);
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    button {
+      font-size: 20px;
+      padding: 10px 20px;
+      margin: 10px;
+      background: #61dafb;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .trail {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      text-align: center;
+      pointer-events: none;
+      opacity: 0.5;
+      animation: fadeOut 1s linear forwards;
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        transform: scale(2);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="menu">
+    <h1>😋Feed Me Right 🍴</h1>
+    <p>Can you keep me alive with the right food?</p>
+    <div id="animal-choices"></div>
+    <br>
+    <a href="index.html">
+      <button id="back-main">🔙 Back </button>
+    </a>
+  </div>
+
+  <div id="game-screen"></div>
+  <div id="cursor-animal"></div>
+
+  <script>
+    const animals = {
+      "🦩": { food: "🦐", lifespan: 8 },
+      "🦜": { food: "🌶️", lifespan: 9 },
+      "🦚": { food: "🍇", lifespan: 7 },
+      "🦤": { food: "🍒", lifespan: 6 },
+      "🦢": { food: "🥬", lifespan: 10 },
+      "🐔": { food: "🌾", lifespan: 6 },
+      "🐦": { food: "🌽", lifespan: 9 },
+      "🦅": { food: "🐁", lifespan: 11 },
+      "🦆": { food: "🥒", lifespan: 8 },
+      "🦉": { food: "🐜", lifespan: 12 },
+      "🐘": { food: "🍌", lifespan: 10 },
+      "🦥": { food: "🍃", lifespan: 13 },
+      "🦭": { food: "🐟", lifespan: 11 },
+      "🐼": { food: "🎍", lifespan: 11 },
+      "🦝": { food: "🍪", lifespan: 10 },
+      "🐍": { food: "🐀", lifespan: 7 },
+      "🦙": { food: "🍏", lifespan: 9 },
+      "🐿️": { food: "🌰", lifespan: 8 },
+      "🦇": { food: "🦟", lifespan: 8 },
+      "🐙": { food: "🦑", lifespan: 9 },
+      "🐶": { food: "🦴", lifespan: 12 },
+      "🐱": { food: "🐟", lifespan: 10 },
+      "🐵": { food: "🍌", lifespan: 10 },
+      "🐧": { food: "🐟", lifespan: 9 },
+      "🦄": { food: "🦋", lifespan: 15 },
+      "🦁": { food: "🥩", lifespan: 9 }
+    };
+
+    const foodPool = [...new Set(Object.values(animals).map(a => a.food).concat(['🍎','🍔','🍕','🥕','🍩','🍇','🍗','🍞','🍪','🍍']))];
+    const animalChoicesDiv = document.getElementById("animal-choices");
+
+    for (const animal in animals) {
+      const btn = document.createElement("button");
+      btn.innerText = animal;
+      btn.className = "animal-button";
+      btn.onclick = () => startGame(animal);
+      animalChoicesDiv.appendChild(btn);
+    }
+
+    let selectedAnimal = "";
+    let foodEmoji = "";
+    let correctCount = 0;
+    let missedCorrectFood = 0;
+    let lifeSpan = 10;
+    let gameRunning = false;
+
+    function startGame(animalEmoji) {
+      selectedAnimal = animalEmoji;
+      foodEmoji = animals[selectedAnimal].food;
+      lifeSpan = animals[selectedAnimal].lifespan;
+      correctCount = 0;
+      missedCorrectFood = 0;
+      gameRunning = true;
+
+      document.getElementById("menu").style.display = "none";
+      const gameScreen = document.getElementById("game-screen");
+      gameScreen.innerHTML = `<div id="scoreboard">🧠 0/${lifeSpan}</div>`;
+
+      document.getElementById("cursor-animal").innerText = selectedAnimal;
+      document.getElementById("cursor-animal").style.display = "block";
+      document.body.style.cursor = "none";
+
+      spawnFood();
+      animateFood();
+    }
+
+    function spawnFood() {
+      if (!gameRunning) return;
+
+      const food = document.createElement("div");
+      food.className = "falling-food";
+      const isFav = Math.random() < 0.3;
+      food.innerText = isFav ? foodEmoji : getRandomNonFavFood();
+      food.style.left = Math.random() * 90 + "%";
+      food.style.top = "0px";
+      document.getElementById("game-screen").appendChild(food);
+
+      setTimeout(spawnFood, 1000);
+    }
+
+    function getRandomNonFavFood() {
+      let f;
+      do {
+        f = foodPool[Math.floor(Math.random() * foodPool.length)];
+      } while (f === foodEmoji);
+      return f;
+    }
+
+    function animateFood() {
+      const interval = setInterval(() => {
+        if (!gameRunning) {
+          clearInterval(interval);
+          return;
+        }
+
+        const animalDiv = document.getElementById("cursor-animal");
+        const rect1 = animalDiv.getBoundingClientRect();
+
+        document.querySelectorAll(".falling-food").forEach(food => {
+          const top = parseFloat(food.style.top || "0");
+          food.style.top = (top + 3) + "px";
+
+          const rect2 = food.getBoundingClientRect();
+          const isTouched = rect1.left < rect2.right &&
+                            rect1.right > rect2.left &&
+                            rect1.top < rect2.bottom &&
+                            rect1.bottom > rect2.top;
+
+          if (isTouched) {
+            if (food.innerText === foodEmoji) {
+              correctCount++;
+              growAnimal();
+              updateScore();
+              food.remove();
+              if (correctCount >= lifeSpan) {
+                endGame(`${selectedAnimal} lived a full life. 🌈`);
+              }
+            } else {
+              endGame(`${selectedAnimal} ate ${food.innerText} and died instantly ☠️`);
+            }
+          } else if (top > window.innerHeight) {
+            if (food.innerText === foodEmoji) {
+              missedCorrectFood++;
+              if (missedCorrectFood >= 5) {
+                endGame(`${selectedAnimal} starved to death 💀`);
+              }
+            }
+            food.remove();
+          }
+        });
+      }, 50);
+    }
+
+    function growAnimal() {
+      const animalDiv = document.getElementById("cursor-animal");
+      const size = 60 + correctCount * 5;
+      animalDiv.style.fontSize = `${size}px`;
+    }
+
+    function updateScore() {
+      const score = document.getElementById("scoreboard");
+      score.innerText = `🧠 ${correctCount}/${lifeSpan}`;
+    }
+
+    function endGame(message) {
+      gameRunning = false;
+
+      document.body.style.cursor = "auto"; // Show system cursor
+      document.getElementById("cursor-animal").style.display = "none"; // Hide animal emoji
+
+      document.getElementById("game-screen").innerHTML += `
+        <div class="game-over">${message}<br><br>
+          <button onclick="startGame('${selectedAnimal}')">🔁 Play Again</button>
+          <button onclick="goBackToMenu()"> Back to Animal Select</button>
+        </div>
+      `;
+    }
+
+    function goBackToMenu() {
+      gameRunning = false;
+      document.getElementById("menu").style.display = "block";
+      document.getElementById("game-screen").innerHTML = "";
+      selectedAnimal = "";
+      document.getElementById("cursor-animal").style.display = "block";
+      document.body.style.cursor = "none";
+    }
+
+    document.addEventListener("mousemove", e => {
+      const animalDiv = document.getElementById("cursor-animal");
+      animalDiv.style.left = (e.pageX - 20) + "px";
+      animalDiv.style.top = (e.pageY - 20) + "px";
+
+      const trail = document.createElement("div");
+      trail.className = "trail";
+      trail.innerText = selectedAnimal || getRandomAnimalEmoji();
+      trail.style.left = e.pageX + "px";
+      trail.style.top = e.pageY + "px";
+      document.body.appendChild(trail);
+      setTimeout(() => trail.remove(), 1000);
+    });
+
+    function getRandomAnimalEmoji() {
+      const keys = Object.keys(animals);
+      return keys[Math.floor(Math.random() * keys.length)];
+    }
+  </script>
+</body>
+</html>

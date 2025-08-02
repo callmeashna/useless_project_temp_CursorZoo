@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cursor Zoo</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: linear-gradient(to bottom, #b4f2b4, #e2ffe2);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      position: relative;
+      height: 100vh;
+    }
+
+    .floating-heading {
+      text-align: center;
+      font-size: 3rem;
+      margin-top: 20px;
+      animation: floatHeading 3s ease-in-out infinite;
+      z-index: 10;
+      position: relative;
+    }
+
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      margin-top: 120px;
+      z-index: 10;
+      position: relative;
+    }
+
+    .zoo-btn {
+      background-color: #fff7cc;
+      padding: 15px 30px;
+      font-size: 1.5rem;
+      border-radius: 50px;
+      border: 3px dashed #88cc88;
+      cursor: pointer;
+      text-decoration: none;
+      color: #333;
+      transition: transform 0.3s ease;
+    }
+
+    .zoo-btn:hover {
+      transform: scale(1.1);
+    }
+
+    @keyframes floatHeading {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .leaf, .animal {
+      position: absolute;
+      font-size: 1.5rem;
+      pointer-events: none;
+      animation: floatUp 10s linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="floating-heading">🦁 Cursor Zoo 🐘</div>
+
+  <div class="button-container">
+    <a href="trails.html" class="zoo-btn">🐾 Trails</a>
+    <a href="fortune.html" class="zoo-btn">🔮 Fortune</a>
+    <a href="mood.html" class="zoo-btn">🎭 Mood</a>
+    <a href="who.html" class="zoo-btn">🧬 Who are you?</a>
+    <a href="game.html" class="zoo-btn">😋 Feed Me</a>
+    <a href="calculator.html" class="zoo-btn">🧮 Animal Math</a>
+  </div>
+
+  <div id="leaves-container"></div>
+  <div id="animals-container"></div>
+
+  <script>
+    const leaves = ['🍃', '🌿', '🍂', '🍁'];
+    const animals = ['🐒', '🦜', '🦓', '🦩', '🦁', '🦉', '🦆', '🐘', '🐅', '🐢'];
+
+    function spawnFloatingEmoji(containerId, emojiList, frequency = 800) {
+      const container = document.getElementById(containerId);
+
+      setInterval(() => {
+        const emoji = document.createElement('div');
+        emoji.className = containerId.includes('leaf') ? 'leaf' : 'animal';
+        emoji.textContent = emojiList[Math.floor(Math.random() * emojiList.length)];
+        emoji.style.left = Math.random() * 100 + 'vw';
+        emoji.style.fontSize = Math.random() * 20 + 20 + 'px';
+        container.appendChild(emoji);
+
+        setTimeout(() => emoji.remove(), 11000);
+      }, frequency);
+    }
+
+    spawnFloatingEmoji('leaves-container', leaves, 500);
+    spawnFloatingEmoji('animals-container', animals, 1000);
+  </script>
+</body>
+</html>

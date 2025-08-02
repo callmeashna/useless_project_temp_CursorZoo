@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cursor Zoo - Mega Fortune Teller</title>
+  <style>
+    body {
+      margin: 0;
+      background: radial-gradient(circle, #fff0f5, #ffe4b5);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+      cursor: url('data:image/svg+xml;utf8,<svg height="40" width="40" xmlns="http://www.w3.org/2000/svg"><text y="30" font-size="30">🔮</text></svg>') 16 16, auto;
+    }
+
+    h1 {
+      font-size: 3rem;
+      animation: float 3s ease-in-out infinite;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    select, button {
+      font-size: 1.2rem;
+      padding: 10px 20px;
+      border-radius: 25px;
+      border: none;
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    .fortune-box {
+      background: #fff8dc;
+      padding: 25px 40px;
+      border-radius: 15px;
+      text-align: center;
+      border: 3px dotted #ff69b4;
+      font-size: 1.3rem;
+      margin-top: 30px;
+      box-shadow: 0 0 10px #ffb6c1;
+      min-height: 100px;
+      width: 80%;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .emoji {
+      position: absolute;
+      font-size: 2rem;
+      pointer-events: none;
+      animation: floatUp 6s linear infinite;
+    }
+    button {
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: none;
+  margin: 10px;
+  cursor: pointer;
+  background: #ffdab9;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>🌿 Cursor Zoo: Sarcastic Animal Fortune Teller 🧞‍♂️</h1>
+
+  <select id="animal">
+    <option disabled selected>Choose your ridiculous animal guide</option>
+  </select>
+  <button onclick="revealFortune()">Predict My Absurd Future</button>
+  <button onclick="goToMain()">🔙 Back</button>
+  <div class="fortune-box" id="fortune">The stars await your animal pick... pick weirdly. 🌟</div>
+
+  <script>
+    const animals = {
+      flamingo: [
+        "You’ll elegantly escape your problems by dancing around them in pink. 🦩",
+        "Today you’ll stand on one leg and still do better than most people. 🦩",
+        "You bring fabulous drama to dull situations. Be proud. 🦩"
+      ],
+      parrot: [
+        "You’ll repeat great advice… that you don’t follow. Loudly. 🦜",
+        "You talk too much—but somehow, it's always entertaining. 🦜",
+        "Your future involves mimicking someone powerful and getting away with it. 🦜"
+      ],
+      peacock: [
+        "Expect attention. Especially when no one asked for it. 🦚",
+        "You're not vain—you’re just always correct. 🦚",
+        "You’ll shine so brightly someone may need sunglasses to talk to you. 🦚"
+      ],
+      dodo: [
+        "You’re bringing vintage extinction vibes. Retro and rare. 🦤",
+        "Out of style, out of time, out of cares. 🦤",
+        "You’ll confuse everyone by disappearing right when you're needed. 🦤"
+      ],
+      swan: [
+        "You're graceful on the surface, paddling like heck below. 🦢",
+        "You’ll glide through messes like a ballroom dancer in a warzone. 🦢",
+        "Your aura says peace, your past says chaos. 🦢"
+      ],
+      chicken: [
+        "You’ll cross a road today. No one will understand why. 🐓",
+        "People will underestimate you—then you’ll peck them with facts. 🐓",
+        "You're afraid of commitment but brave in karaoke. 🐓"
+      ],
+      bird: [
+        "You’ll sing all day but forget the lyrics halfway. 🐦",
+        "You’ll poop on someone's car and call it divine justice. 🐦",
+        "You fly high but land in the weirdest places. 🐦"
+      ],
+      eagle: [
+        "You’ll soar above drama… only to dive into gossip. 🦅",
+        "You’ll take one noble pose and make it a lifestyle. 🦅",
+        "You’re majestic. At least, that’s what your mirror says. 🦅"
+      ],
+      duck: [
+        "You’ll look calm, sound cute, and secretly plot chaos. 🦆",
+        "Your waddles will lead you to wisdom. Or snacks. 🦆",
+        "You quack under pressure—and somehow it works. 🦆"
+      ],
+      owl: [
+        "You’ll stay up all night, questioning life and snacks. 🦉",
+        "You’re the wise one… unless coffee runs out. 🦉",
+        "People assume you know things. Keep pretending. 🦉"
+      ],
+      elephant: [
+        "Big memory, big heart… big tendency to hold grudges from preschool. 🐘",
+        "You’ll stomp through awkward moments like a pro. 🐘",
+        "You’re graceful, emotional, and allergic to being ignored. 🐘"
+      ],
+      sloth: [
+        "The world moves fast. You’ll nap through it. 🦥",
+        "You're slow—but only because you’re too cool to rush. 🦥",
+        "You’ll achieve everything… eventually. 🦥"
+      ],
+      seal: [
+        "You’ll clap for everything and confuse people. 🦭",
+        "You bring applause where there was only silence. 🦭",
+        "Your roundness is a vibe. Embrace it. 🦭"
+      ],
+      panda: [
+        "You’ll achieve greatness in pajamas while chewing snacks. 🐼",
+        "You’re the boss of lazy productivity. 🐼",
+        "You’ll accidentally become famous by doing nothing. 🐼"
+      ],
+      raccoon: [
+        "Trash? You call it treasure. You clever little thief. 🦝",
+        "You’re chaotic neutral, and everyone secretly loves it. 🦝",
+        "Your mischief level is over 9000. 🦝"
+      ],
+      snake: [
+        "You’re cool, silent, and just a little bit dramatic. 🐍",
+        "People fear you—but you’re just cold and hungry. 🐍",
+        "Your hiss is louder than your bite, and that's the strategy. 🐍"
+      ],
+      llama: [
+        "You spit truths and ignore nonsense. Iconic. 🦙",
+        "Your vibe is 'do not disturb', but make it stylish. 🦙",
+        "You’re fluffy with bite. A dangerous combo. 🦙"
+      ],
+      giraffe: [
+        "You see all, say nothing, judge silently. 🦒",
+        "You’ll overhear secrets just by being tall. 🦒",
+        "Your opinions are elevated. Literally. 🦒"
+      ],
+      chipmunk: [
+        "You’ll hoard snacks and chaos in equal parts. 🐿️",
+        "You’re jittery, sneaky, and weirdly lovable. 🐿️",
+        "Today you’ll plan 5 things and finish 0. 🐿️"
+      ],
+      fox: [
+        "Clever, mysterious, and probably up to something. 🦊",
+        "You’ll charm your way out of work. Again. 🦊",
+        "You play dumb and win smart. 🦊"
+      ],
+      bat: [
+        "You live in the dark, and honestly? Mood. 🦇",
+        "You’ll avoid people with style. 🦇",
+        "You’re misunderstood—and love it that way. 🦇"
+      ],
+      octopus: [
+        "You multitask like an overachiever with attitude. 🐙",
+        "You juggle chaos like it’s a hobby. 🐙",
+        "You're squishy but dangerous. 🐙"
+      ],
+      dog: [
+        "You’re loyal… until snacks are involved. 🐶",
+        "You’ll make 3 new friends and one awkward scene. 🐶",
+        "Your bark is your brand. 🐶"
+      ],
+      cat: [
+        "You own the world. Humans just rent space. 🐱",
+        "You’ll knock something off a table and feel nothing. 🐱",
+        "You’ll nap, then destroy furniture. It’s balance. 🐱"
+      ],
+      monkey: [
+        "You’ll swing into trouble, giggle, and blame gravity. 🐵",
+        "You’re smart—but chaotic neutral. 🐵",
+        "You’ll prank someone important. It’ll be worth it. 🐵"
+      ],
+      penguin: [
+        "You’ll slide through life in a tuxedo of awkward charm. 🐧",
+        "You look cold but your heart is full of salsa. 🐧",
+        "You waddle your way into everyone’s hearts. 🐧"
+      ],
+      unicorn: [
+        "You sparkle unreasonably. You probably eat glitter. 🦄",
+        "You’re magical but completely unpredictable. 🦄",
+        "You’ll ghost reality and blame magic. 🦄"
+      ],
+      lion: [
+        "You rule. But only after a nap. 🦁",
+        "You demand loyalty and snacks. 🦁",
+        "You’ll roar during meetings—emotionally. 🦁"
+      ]
+    };
+
+    const animalSelect = document.getElementById("animal");
+    const fortuneBox = document.getElementById("fortune");
+
+    // Fill dropdown
+    for (let key in animals) {
+      const option = document.createElement("option");
+      option.value = key;
+      option.textContent = `🐾 ${key.charAt(0).toUpperCase() + key.slice(1)}`;
+      animalSelect.appendChild(option);
+    }
+
+    function revealFortune() {
+      const animal = animalSelect.value;
+      const options = animals[animal];
+      if (options) {
+        const pick = options[Math.floor(Math.random() * options.length)];
+        fortuneBox.textContent = pick;
+      } else {
+        fortuneBox.textContent = "Choose an animal. Don’t worry, judgment is part of the fun.";
+      }
+    }
+
+    // Floating emoji animation
+    const sparkleEmojis = ['🌟','✨','🧿','🔮','💫','🌀','🎉','🎈'];
+    setInterval(() => {
+      const floaty = document.createElement('div');
+      floaty.className = 'emoji';
+      floaty.textContent = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+      floaty.style.left = Math.random() * 100 + 'vw';
+      floaty.style.fontSize = Math.random() * 20 + 20 + 'px';
+      document.body.appendChild(floaty);
+      setTimeout(() => floaty.remove(), 6000);
+    }, 350);
+
+  function goToMain() {
+    window.location.href = "index.html";
+  }
+  </script>
+</body>
+</html>

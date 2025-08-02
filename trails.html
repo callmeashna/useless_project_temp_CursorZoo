@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cursor Zoo: Trail Carnival</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #ffd6e0, #d0f0f6);
+      font-family: "Comic Sans MS", cursive;
+      text-align: center;
+      padding: 40px;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 3rem;
+      color: #ff1493;
+    }
+    .animal {
+      display: inline-block;
+      margin: 15px;
+      padding: 12px 20px;
+      font-size: 1.8rem;
+      background: #fff5;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .animal:hover {
+      background: #ffffffaa;
+      transform: scale(1.1) rotate(-2deg);
+    }
+    .trail {
+      position: fixed;
+      pointer-events: none;
+      font-size: 1.8rem;
+      animation: floatUp 2s ease-out forwards;
+    }
+    @keyframes floatUp {
+      to {
+        transform: translateY(-40px);
+        opacity: 0;
+      }
+    }
+    .showcase {
+      margin-top: 30px;
+      font-size: 5rem;
+      transition: transform 0.5s ease;
+      animation: pop 0.6s ease-out;
+    }
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1.2); opacity: 1; }
+    }
+    .compliment {
+      font-size: 1.6rem;
+      color: #444;
+      margin-top: 10px;
+      animation: fade 1s ease-in;
+    }
+    @keyframes fade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Back Button Styling */
+    .back-button {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: #ffe6aa;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      font-family: 'Comic Sans MS', cursive;
+      box-shadow: 2px 2px 8px #aaa;
+      z-index: 1000;
+    }
+    .back-button:hover {
+      background: #ffd36b;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐾 Cursor Zoo Trail Carnival 🦜</h1>
+  <p>Hover & move your cursor for chaos — click an animal for love!</p>
+
+  <div id="zoo">
+    <div class="animal" data-emoji="🦩" data-comment="You stand tall like a fabulous flamingo!">Flamingo</div>
+    <div class="animal" data-emoji="🦜" data-comment="You're as colorful as a tropical parrot!">Parrot</div>
+    <div class="animal" data-emoji="🦚" data-comment="You're stunning like a peacock in full display!">Peacock</div>
+    <div class="animal" data-emoji="🦤" data-comment="You're one of a kind like the dodo!">Dodo</div>
+    <div class="animal" data-emoji="🦢" data-comment="So graceful, just like a swan!">Swan</div>
+    <div class="animal" data-emoji="🐓" data-comment="You rule the morning like a mighty rooster!">Chicken</div>
+    <div class="animal" data-emoji="🐦" data-comment="Light as a feather and full of joy!">Bird</div>
+    <div class="animal" data-emoji="🦅" data-comment="You soar above all like an eagle!">Eagle</div>
+    <div class="animal" data-emoji="🦆" data-comment="Quirky, funny, and loved — like a duck!">Duck</div>
+    <div class="animal" data-emoji="🦉" data-comment="Wise and wonderful like an owl!">Owl</div>
+    <div class="animal" data-emoji="🐘" data-comment="Strong and caring like an elephant!">Elephant</div>
+    <div class="animal" data-emoji="🦥" data-comment="Chill and lovable like a sloth!">Sloth</div>
+    <div class="animal" data-emoji="🦭" data-comment="Soft and squishy — a happy seal!">Seal</div>
+    <div class="animal" data-emoji="🐼" data-comment="Everyone adores you like a panda!">Panda</div>
+    <div class="animal" data-emoji="🦝" data-comment="Mischievous and cute like a raccoon!">Raccoon</div>
+    <div class="animal" data-emoji="🐍" data-comment="Sssuper mysterious and cool like a snake!">Snake</div>
+    <div class="animal" data-emoji="🦙" data-comment="Fluffy vibes only — you're a llama star!">Llama</div>
+    <div class="animal" data-emoji="🦒" data-comment="Tall and elegant — a giraffe queen/king!">Giraffe</div>
+    <div class="animal" data-emoji="🐿️" data-comment="Tiny but mighty like a chipmunk!">Chipmunk</div>
+    <div class="animal" data-emoji="🦊" data-comment="Clever and stylish like a fox!">Fox</div>
+    <div class="animal" data-emoji="🦇" data-comment="You're bat-tastically awesome!">Bat</div>
+    <div class="animal" data-emoji="🐙" data-comment="Flexible and fabulous like an octopus!">Octopus</div>
+    <div class="animal" data-emoji="🐶" data-comment="You're loyal and lovable like a doggo!">Dog</div>
+    <div class="animal" data-emoji="🐱" data-comment="You're purr-fect just like a cat!">Cat</div>
+    <div class="animal" data-emoji="🐵" data-comment="Playful and curious — you're a fun monkey!">Monkey</div>
+    <div class="animal" data-emoji="🐧" data-comment="Cool and waddly like a penguin!">Penguin</div>
+    <div class="animal" data-emoji="🦄" data-comment="You're a sparkling unicorn dream!">Unicorn</div>
+    <div class="animal" data-emoji="🦁" data-comment="Brave and bold like a lion!">Lion</div>
+  </div>
+
+  <div id="display"></div>
+
+  <button class="back-button" onclick="goBack()">🔙 Back</button>
+
+  <script>
+    let selectedEmoji = "🐾";
+    const zoo = document.getElementById("zoo");
+    const display = document.getElementById("display");
+
+    zoo.addEventListener("mouseover", (e) => {
+      if (e.target.classList.contains("animal")) {
+        selectedEmoji = e.target.dataset.emoji;
+      }
+    });
+
+    zoo.addEventListener("click", (e) => {
+      if (e.target.classList.contains("animal")) {
+        const emoji = e.target.dataset.emoji;
+        const comment = e.target.dataset.comment;
+        display.innerHTML = `
+          <div class="showcase">${emoji}</div>
+          <div class="compliment">${comment}</div>
+        `;
+      }
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      const trail = document.createElement("div");
+      trail.className = "trail";
+      trail.style.left = e.pageX + "px";
+      trail.style.top = e.pageY + "px";
+      trail.textContent = selectedEmoji;
+      document.body.appendChild(trail);
+      setTimeout(() => trail.remove(), 2000);
+    });
+
+    function goBack() {
+      window.location.href = "index.html"; // Update path if needed
+    }
+  </script>
+</body>
+</html>

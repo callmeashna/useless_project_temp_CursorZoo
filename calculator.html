@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Animal Emoji Calculator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI Emoji', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: bgAnimation 15s infinite alternate;
+      transition: background 0.3s ease;
+    }
+
+    @keyframes bgAnimation {
+      0% { background: linear-gradient(135deg, #ffecd2, #fcb69f); }
+      50% { background: linear-gradient(135deg, #ff9a9e, #fad0c4); }
+      100% { background: linear-gradient(135deg, #a1c4fd, #c2e9fb); }
+    }
+
+    .calculator {
+      background: white;
+      border-radius: 25px;
+      box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+      padding: 30px 20px;
+      width: 360px;
+      text-align: center;
+      transition: all 0.3s ease-in-out;
+    }
+
+    #display {
+      font-size: 28px;
+      min-height: 55px;
+      margin-bottom: 20px;
+      padding: 10px 15px;
+      border: 2px solid #dfe6e9;
+      border-radius: 12px;
+      background: #f1f2f6;
+      color: #2d3436;
+      word-wrap: break-word;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      justify-items: center;
+    }
+
+    .btn {
+      font-size: 22px;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      width: 60px;
+      height: 60px;
+      background: #74b9ff;
+      color: white;
+      transition: 0.2s ease-in-out;
+    }
+
+    .btn:hover {
+      background: #0984e3;
+      transform: scale(1.05);
+    }
+
+    .btn-clear, .btn-delete, .btn-equal {
+      background: #fd79a8;
+    }
+
+    .btn-clear:hover, .btn-delete:hover, .btn-equal:hover {
+      background: #e84393;
+    }
+
+    .btn-back {
+      background: #55efc4;
+      margin-top: 10px;
+    }
+
+    .btn-back:hover {
+      background: #00b894;
+    }
+
+    .legend {
+      font-size: 13px;
+      text-align: left;
+      margin-top: 25px;
+      background: #ffeaa7;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+      list-style-type: none;
+      padding-left: 15px;
+    }
+
+    .legend li {
+      margin-bottom: 4px;
+      list-style-type: none;
+    }
+
+    #bg-selector {
+      margin-bottom: 15px;
+      padding: 5px;
+      font-size: 14px;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 400px) {
+      .calculator {
+        width: 90%;
+      }
+
+      .btn {
+        font-size: 20px;
+        width: 55px;
+        height: 55px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    
+
+    <div id="display">0</div>
+
+    <div class="button-grid">
+      <!-- Numbers -->
+      <button class="btn" onclick="appendValue('🐶')">🐶</button>
+      <button class="btn" onclick="appendValue('🐱')">🐱</button>
+      <button class="btn" onclick="appendValue('🐭')">🐭</button>
+      <button class="btn" onclick="appendValue('🦊')">🦊</button>
+      <button class="btn" onclick="appendValue('🐻')">🐻</button>
+      <button class="btn" onclick="appendValue('🐼')">🐼</button>
+      <button class="btn" onclick="appendValue('🐨')">🐨</button>
+      <button class="btn" onclick="appendValue('🐯')">🐯</button>
+      <button class="btn" onclick="appendValue('🦁')">🦁</button>
+      <button class="btn" onclick="appendValue('🐸')">🐸</button>
+      <button class="btn" onclick="appendValue('🐾')">🐾</button>
+
+      <!-- Operators -->
+      <button class="btn" onclick="appendValue('🐔')">🐔</button>
+      <button class="btn" onclick="appendValue('🦉')">🦉</button>
+      <button class="btn" onclick="appendValue('🦅')">🦅</button>
+      <button class="btn" onclick="appendValue('🐦')">🐦</button>
+
+      <!-- Functions -->
+      <button class="btn btn-clear" onclick="clearDisplay()">C</button>
+      <button class="btn btn-delete" onclick="deleteLast()">❌</button>
+      <button class="btn btn-equal" onclick="calculate()">=</button>
+    </div>
+
+    <button class="btn btn-back" onclick="goBack()">⬅</button>
+
+    <ul class="legend">
+      <strong>Legend:</strong>
+      <li>🐶 → 1 &nbsp; 🐱 → 2 &nbsp; 🐭 → 3 &nbsp; 🦊 → 4</li>
+      <li>🐻 → 5 &nbsp; 🐼 → 6 &nbsp; 🐨 → 7 &nbsp; 🐯 → 8</li>
+      <li>🦁 → 9 &nbsp; 🐸 → 0 &nbsp; 🐾 → .</li>
+      <li>🐔 → + &nbsp; 🦉 → - &nbsp; 🦅 → × &nbsp; 🐦 → ÷</li>
+    </ul>
+  </div>
+
+  <script>
+    const display = document.getElementById("display");
+
+    const numberToAnimal = {
+      "0": "🐸", "1": "🐶", "2": "🐱", "3": "🐭",
+      "4": "🦊", "5": "🐻", "6": "🐼", "7": "🐨",
+      "8": "🐯", "9": "🦁", ".": "🐾"
+    };
+
+    const animalToNumber = {
+      "🐶": "1", "🐱": "2", "🐭": "3", "🦊": "4",
+      "🐻": "5", "🐼": "6", "🐨": "7", "🐯": "8",
+      "🦁": "9", "🐸": "0", "🐾": "."
+    };
+
+    const operatorToSymbol = {
+      "🐔": "+", "🦉": "-", "🦅": "*", "🐦": "/"
+    };
+
+    function appendValue(val) {
+      if (display.innerText === "0" || display.innerText === "Error") {
+        display.innerText = val;
+      } else {
+        display.innerText += val;
+      }
+    }
+
+    function clearDisplay() {
+      display.innerText = "0";
+    }
+
+    function deleteLast() {
+      if (display.innerText.length > 2) {
+        display.innerText = display.innerText.slice(0, -2);
+      } else {
+        display.innerText = "0";
+      }
+    }
+
+    function calculate() {
+      let input = display.innerText;
+
+      for (let emoji in animalToNumber) {
+        input = input.split(emoji).join(animalToNumber[emoji]);
+      }
+
+      for (let emoji in operatorToSymbol) {
+        input = input.split(emoji).join(operatorToSymbol[emoji]);
+      }
+
+      try {
+        const result = eval(input).toString();
+        const resultEmoji = [...result].map(ch => numberToAnimal[ch] || "").join("");
+        display.innerText = resultEmoji || "Error";
+      } catch {
+        display.innerText = "Error";
+      }
+    }
+
+    function goBack() {
+      window.location.href = "index.html";
+    }
+
+    document.getElementById("bg-selector").addEventListener("change", function () {
+      document.body.style.background = this.value;
+    });
+  </script>
+</body>
+</html>
